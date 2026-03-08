@@ -1,6 +1,8 @@
 import { create } from "zustand";
 import type { MenuItem } from "@/lib/types";
 
+export const MAX_QUANTITY_PER_ITEM = 10;
+
 export interface CartItem extends MenuItem {
   quantity: number;
 }
@@ -21,10 +23,12 @@ export const useCartStore = create<CartState>((set, get) => ({
   addItem: (item: MenuItem) =>
     set((state) => {
       const existing = state.items.find((i) => i.id === item.id);
+      const nextQty = existing ? existing.quantity + 1 : 1;
+      if (nextQty > MAX_QUANTITY_PER_ITEM) return state;
       if (existing) {
         return {
           items: state.items.map((i) =>
-            i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i
+            i.id === item.id ? { ...i, quantity: nextQty } : i
           ),
         };
       }
