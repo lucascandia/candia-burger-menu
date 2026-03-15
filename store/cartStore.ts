@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import type { MenuItem } from "@/lib/types";
+import { getItemLineTotal } from "@/lib/utils";
 
 export const MAX_QUANTITY_PER_ITEM = 10;
 
@@ -59,7 +60,7 @@ export const useCartStore = create<CartState>((set, get) => ({
   },
 
   getTotalPrice: () =>
-    get().items.reduce((sum, item) => sum + item.price * item.quantity, 0),
+    get().items.reduce((sum, item) => sum + getItemLineTotal(item), 0),
 
   getTotalItems: () =>
     get().items.reduce((sum, item) => sum + item.quantity, 0),

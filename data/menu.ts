@@ -28,7 +28,7 @@ export const menuData = [
     category: "Chivitos & Porciones",
     items: [
       { id: "c1", name: "Chivito", description: "Doble carne de lomito, doble huevo, queso mozzarella, lechuga, tomate, repollo, salsa de la casa", price: 35000, image: "" },
-      { id: "c2", name: "Chivito Plus", description: "Triple carne de lomito, triple huevo, queso mozzarella, cebolla caramelizada, lechuga, tomate, repollo, toque de cheddar, agregado de papas fritas", price: 70000, image: "/images/chivito.jpeg" },
+      { id: "c2", name: "Chivito Plus", description: "Triple carne de lomito, triple huevo, queso mozzarella, cebolla caramelizada, lechuga, tomate, repollo, toque de cheddar, agregado de papas fritas", price: 70000, image: "/images/chivitoplus.jpeg" },
       { id: "e1", name: "Churrasquito", description: "Porción de churrasquito", price: 9000, image: "/images/churrasquito.jpeg" }
     ]
   },
@@ -41,9 +41,7 @@ export const menuData = [
       { id: "p3", name: "Papas con Cheddar", description: "Agregado de Cheddar", price: 16000, image: "" },
       { id: "p4", name: "Papas con Catupiry", description: "Agregado de Catupiry", price: 16000, image: "" },
       { id: "p5", name: "Papas Catupiry y Cheddar", description: "Agregado de Catupiry y Cheddar", price: 21000, image: "" },
-      { id: "s1", name: "Salsa de ajo", description: "Salsa especial de ajo", price: 3000, image: "" },
-      { id: "s2", name: "Mayonesa", description: "", price: 2000, image: "" },
-      { id: "s3", name: "Ketchup", description: "", price: 2000, image: "" }
+      { id: "s1", name: "Salsa de ajo", description: "Salsa especial de ajo (1: Gs. 2.000 · 2: Gs. 3.000 · 3: Gs. 5.000)", price: 2000, image: "" }
     ]
   },
   {

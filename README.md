@@ -8,6 +8,8 @@ Menú digital de **Candia Burger** con carrito y pedido por WhatsApp. Desarrolla
 - Logo y fotos de productos (hamburguesas, lomitos); emojis como fallback cuando no hay imagen
 - Navegación por categorías con scroll suave y tab activo resaltado
 - Carrito con Zustand y envío del pedido por WhatsApp
+- Checkout con tipo de pedido (Comer en Local / Para Retirar / Delivery) y mensaje WhatsApp formateado
+- Salsa de ajo con precio por cantidad (1: Gs. 2.000, 2: Gs. 3.000, 3: Gs. 5.000)
 - Descripciones expandibles en productos con texto largo
 - Footer con teléfono de delivery
 
