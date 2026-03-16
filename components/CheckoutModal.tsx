@@ -1,13 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import { X, MessageCircle, UtensilsCrossed, Store, Truck } from "lucide-react";
-import { useCartStore } from "@/store/cartStore";
+import { X, MessageCircle, UtensilsCrossed, Store, Truck, Plus, Minus, Trash2, Pencil } from "lucide-react";
+import { useCartStore, MAX_QUANTITY_PER_ITEM } from "@/store/cartStore";
 import { formatPrice, getWhatsAppOrderUrl, getItemLineTotal, type OrderType, type CheckoutFormData } from "@/lib/utils";
+import type { CartItem } from "@/lib/types";
 
 interface CheckoutModalProps {
   open: boolean;
   onClose: () => void;
+  onEditItem?: (item: CartItem) => void;
 }
 
 const ORDER_OPTIONS: { value: OrderType; label: string; icon: React.ReactNode }[] = [
@@ -16,10 +18,13 @@ const ORDER_OPTIONS: { value: OrderType; label: string; icon: React.ReactNode }[
   { value: "delivery", label: "Delivery", icon: <Truck className="h-4 w-4" /> },
 ];
 
-export function CheckoutModal({ open, onClose }: CheckoutModalProps) {
+export function CheckoutModal({ open, onClose, onEditItem }: CheckoutModalProps) {
   const items = useCartStore((state) => state.items);
   const getTotalPrice = useCartStore((state) => state.getTotalPrice);
   const clearCart = useCartStore((state) => state.clearCart);
+  const increment = useCartStore((state) => state.increment);
+  const decrement = useCartStore((state) => state.decrement);
+  const removeItem = useCartStore((state) => state.removeItem);
 
   const [orderType, setOrderType] = useState<OrderType>("local");
   const [name, setName] = useState("");
@@ -176,16 +181,67 @@ export function CheckoutModal({ open, onClose }: CheckoutModalProps) {
               <ul className="space-y-3">
                 {items.map((item) => (
                   <li
-                    key={item.id}
-                    className="flex justify-between gap-2 border-b border-zinc-800 pb-3 text-sm last:border-0"
+                    key={item.cartItemId}
+                    className="border-b border-zinc-800 pb-3 text-sm last:border-0"
                   >
-                    <span className="text-white">
-                      <span className="font-medium">{item.quantity}x</span>{" "}
-                      {item.name}
-                    </span>
-                    <span className="shrink-0 font-medium text-orange-500">
-                      {formatPrice(getItemLineTotal(item))}
-                    </span>
+                    <div className="flex justify-between gap-2">
+                      <div className="min-w-0">
+                        <p className="text-white">
+                          <span className="font-medium">{item.quantity}x</span>{" "}
+                          {item.name}
+                        </p>
+                        {item.observations?.trim() && (
+                          <p className="mt-0.5 text-sm text-zinc-400 italic">
+                            {item.observations.trim()}
+                          </p>
+                        )}
+                        {onEditItem && (
+                          <button
+                            type="button"
+                            onClick={() => onEditItem(item)}
+                            className="mt-1 flex items-center gap-1 text-xs font-medium text-orange-500 cursor-pointer select-none transition-colors hover:text-orange-400"
+                          >
+                            <Pencil className="h-3 w-3" aria-hidden />
+                            Editar
+                          </button>
+                        )}
+                      </div>
+                      <div className="flex shrink-0 items-center gap-2">
+                        <span className="font-medium text-orange-500">
+                          {formatPrice(getItemLineTotal(item))}
+                        </span>
+                        <div className="flex items-center rounded-lg border border-zinc-600 bg-zinc-800">
+                          <button
+                            type="button"
+                            onClick={() =>
+                              item.quantity === 1
+                                ? removeItem(item.cartItemId)
+                                : decrement(item.cartItemId)
+                            }
+                            className="flex h-8 w-8 items-center justify-center text-white transition-colors hover:bg-zinc-700 rounded-l-lg"
+                            aria-label={item.quantity === 1 ? "Quitar del pedido" : "Quitar uno"}
+                          >
+                            {item.quantity === 1 ? (
+                              <Trash2 className="h-3.5 w-3.5" />
+                            ) : (
+                              <Minus className="h-3.5 w-3.5" />
+                            )}
+                          </button>
+                          <span className="min-w-[1.5rem] px-1 text-center text-xs font-medium text-white">
+                            {item.quantity}
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() => increment(item.cartItemId)}
+                            disabled={item.quantity >= MAX_QUANTITY_PER_ITEM}
+                            className="flex h-8 w-8 items-center justify-center text-white transition-colors hover:bg-zinc-700 rounded-r-lg disabled:opacity-40 disabled:cursor-not-allowed"
+                            aria-label="Agregar uno"
+                          >
+                            <Plus className="h-3.5 w-3.5" />
+                          </button>
+                        </div>
+                      </div>
+                    </div>
                   </li>
                 ))}
               </ul>

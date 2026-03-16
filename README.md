@@ -2,16 +2,21 @@
 
 Menú digital de **Candia Burger** con carrito y pedido por WhatsApp. Desarrollado con Next.js 14, TypeScript y Tailwind CSS.
 
+## En producción
+
+**URL:** [https://candia-burger-menu.vercel.app/](https://candia-burger-menu.vercel.app/)
+
 ## Características
 
 - Tema oscuro con acentos naranja/rojo (marca "Fuego")
 - Logo y fotos de productos (hamburguesas, lomitos); emojis como fallback cuando no hay imagen
 - Navegación por categorías con scroll suave y tab activo resaltado
-- Carrito con Zustand y envío del pedido por WhatsApp
+- Carrito con Zustand (agrupación por producto y aclaraciones) y envío del pedido por WhatsApp
 - Checkout con tipo de pedido (Comer en Local / Para Retirar / Delivery) y mensaje WhatsApp formateado
+- Edición de cantidad y aclaraciones desde el resumen del pedido
 - Salsa de ajo con precio por cantidad (1: Gs. 2.000, 2: Gs. 3.000, 3: Gs. 5.000)
 - Descripciones expandibles en productos con texto largo
-- Footer con teléfono de delivery
+- Footer con delivery y firma del desarrollador
 
 ## Stack
 
@@ -44,6 +49,8 @@ Abrir [http://localhost:3000](http://localhost:3000) (o el puerto que indique la
 | `npm run lint`  | Ejecutar ESLint          |
 
 ## Despliegue en Vercel
+
+El proyecto está desplegado en **Vercel**: [candia-burger-menu.vercel.app](https://candia-burger-menu.vercel.app/).
 
 1. Conecta este repositorio en [Vercel](https://vercel.com).
 2. Vercel detectará Next.js y usará `npm run build` por defecto.

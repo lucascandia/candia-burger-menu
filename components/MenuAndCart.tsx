@@ -1,12 +1,13 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { Phone } from "lucide-react";
 import { Header } from "./Header";
+import { Footer } from "./Footer";
 import { ProductCard } from "./ProductCard";
 import { CartFAB } from "./CartFAB";
 import { CheckoutModal } from "./CheckoutModal";
-import type { MenuItem } from "@/lib/types";
+import { AddToCartModal } from "./AddToCartModal";
+import type { MenuItem, CartItem } from "@/lib/types";
 
 interface MenuCategory {
   id: string;
@@ -18,11 +19,22 @@ interface MenuAndCartProps {
   menuData: MenuCategory[];
 }
 
-const DELIVERY_PHONE = "0983 009 309";
 const SCROLL_SPY_IGNORE_MS = 900;
+
+function cartItemToMenuItem(item: CartItem): MenuItem {
+  return {
+    id: item.id,
+    name: item.name,
+    description: item.description,
+    price: item.price,
+    image: item.image,
+  };
+}
 
 export function MenuAndCart({ menuData }: MenuAndCartProps) {
   const [checkoutOpen, setCheckoutOpen] = useState(false);
+  const [addToCartProduct, setAddToCartProduct] = useState<MenuItem | null>(null);
+  const [addToCartEditItem, setAddToCartEditItem] = useState<CartItem | null>(null);
   const [activeCategoryId, setActiveCategoryId] = useState<string | null>(menuData[0]?.id ?? null);
   const sectionRefs = useRef<Record<string, HTMLElement | null>>({});
   const categories = menuData.map(({ id, category }) => ({ id, category }));
@@ -96,24 +108,38 @@ export function MenuAndCart({ menuData }: MenuAndCartProps) {
             <ul className="flex flex-col gap-3">
               {section.items.map((item) => (
                 <li key={item.id}>
-                  <ProductCard item={item} categoryId={section.id} />
+                  <ProductCard
+                    item={item}
+                    categoryId={section.id}
+                    onAddClick={(product) => {
+                    setAddToCartProduct(product);
+                    setAddToCartEditItem(null);
+                  }}
+                  />
                 </li>
               ))}
             </ul>
           </section>
         ))}
-        <footer className="flex items-center justify-center gap-2 py-6 text-sm text-zinc-400">
-          <Phone className="h-4 w-4 shrink-0" aria-hidden />
-          <span>
-            Delivery Disponible:{" "}
-            <a href={`tel:${DELIVERY_PHONE.replace(/\s/g, "")}`} className="text-orange-500 hover:underline">
-              {DELIVERY_PHONE}
-            </a>
-          </span>
-        </footer>
+        <Footer />
       </main>
       <CartFAB onOpenCheckout={() => setCheckoutOpen(true)} />
-      <CheckoutModal open={checkoutOpen} onClose={() => setCheckoutOpen(false)} />
+      <CheckoutModal
+        open={checkoutOpen}
+        onClose={() => setCheckoutOpen(false)}
+        onEditItem={(item) => {
+          setAddToCartProduct(cartItemToMenuItem(item));
+          setAddToCartEditItem(item);
+        }}
+      />
+      <AddToCartModal
+        product={addToCartProduct}
+        editItem={addToCartEditItem}
+        onClose={() => {
+          setAddToCartProduct(null);
+          setAddToCartEditItem(null);
+        }}
+      />
     </>
   );
 }

@@ -29,10 +29,14 @@ export interface CheckoutFormData {
 }
 
 function formatOrderLines(items: CartItem[]): string[] {
-  return items.map(
-    (item) =>
-      `${item.quantity}x ${item.name} (${formatPrice(getItemLineTotal(item))})`
-  );
+  return items.flatMap((item) => {
+    const line = `${item.quantity}x ${item.name} (${formatPrice(getItemLineTotal(item))})`;
+    const obs = (item.observations ?? "").trim();
+    if (obs) {
+      return [line, `  *Nota: ${obs}*`];
+    }
+    return [line];
+  });
 }
 
 export function buildWhatsAppOrderMessage(
