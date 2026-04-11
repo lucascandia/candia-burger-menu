@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { Header } from "./Header";
 import { Footer } from "./Footer";
 import { ProductCard } from "./ProductCard";
@@ -21,6 +21,14 @@ interface MenuAndCartProps {
 
 const SCROLL_SPY_IGNORE_MS = 900;
 
+/** Y position in the viewport used as the "reading line" for category detection (px from top). */
+function readingLineY(headerEl: HTMLElement | null): number {
+  if (headerEl) {
+    return headerEl.getBoundingClientRect().bottom;
+  }
+  return 120;
+}
+
 function cartItemToMenuItem(item: CartItem): MenuItem {
   return {
     id: item.id,
@@ -37,53 +45,62 @@ export function MenuAndCart({ menuData }: MenuAndCartProps) {
   const [addToCartEditItem, setAddToCartEditItem] = useState<CartItem | null>(null);
   const [activeCategoryId, setActiveCategoryId] = useState<string | null>(menuData[0]?.id ?? null);
   const sectionRefs = useRef<Record<string, HTMLElement | null>>({});
+  const headerRef = useRef<HTMLElement | null>(null);
   const categories = menuData.map(({ id, category }) => ({ id, category }));
 
-  const sectionRatiosRef = useRef<Record<string, number>>({});
   const lastTabClickAtRef = useRef<number>(0);
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (Date.now() - lastTabClickAtRef.current < SCROLL_SPY_IGNORE_MS) {
-          return;
-        }
-        entries.forEach((entry) => {
-          const id = (entry.target as HTMLElement).dataset.sectionId;
-          if (id != null) {
-            sectionRatiosRef.current[id] = entry.intersectionRatio;
-          }
-        });
-        const ratios = sectionRatiosRef.current;
-        const withRatio = menuData
-          .map((s) => ({ id: s.id, ratio: ratios[s.id] ?? 0 }))
-          .filter((x) => x.ratio > 0.05)
-          .sort((a, b) => b.ratio - a.ratio);
-        const activeId = withRatio[0]?.id ?? null;
-        setActiveCategoryId((prev) => (activeId !== null ? activeId : prev));
-      },
-      {
-        rootMargin: "-100px 0px -50% 0px",
-        threshold: [0, 0.05, 0.1, 0.25, 0.5, 0.75, 1],
+  const updateActiveFromScroll = useCallback(() => {
+    if (Date.now() - lastTabClickAtRef.current < SCROLL_SPY_IGNORE_MS) {
+      return;
+    }
+    const lineY = readingLineY(headerRef.current);
+    const lastSection = menuData[menuData.length - 1];
+    const lastEl = lastSection ? sectionRefs.current[lastSection.id] : null;
+    if (lastEl) {
+      const lastRect = lastEl.getBoundingClientRect();
+      if (lineY >= lastRect.bottom) {
+        setActiveCategoryId((prev) => (prev === null ? prev : null));
+        return;
       }
-    );
+    }
 
-    const timer = requestAnimationFrame(() => {
-      menuData.forEach((section) => {
-        const el = sectionRefs.current[section.id];
-        if (el) observer.observe(el);
-      });
-    });
+    let contained: string | null = null;
+    let lastTopPassed: string | null = null;
+    for (const section of menuData) {
+      const el = sectionRefs.current[section.id];
+      if (!el) continue;
+      const r = el.getBoundingClientRect();
+      if (lineY >= r.top && lineY < r.bottom) {
+        contained = section.id;
+        break;
+      }
+      if (r.top <= lineY) {
+        lastTopPassed = section.id;
+      }
+    }
 
-    return () => {
-      cancelAnimationFrame(timer);
-      observer.disconnect();
-    };
+    const next = contained ?? lastTopPassed ?? menuData[0]?.id ?? null;
+    setActiveCategoryId((prev) => (prev === next ? prev : next));
   }, [menuData]);
+
+  useEffect(() => {
+    updateActiveFromScroll();
+    const onScrollOrResize = () => {
+      requestAnimationFrame(updateActiveFromScroll);
+    };
+    window.addEventListener("scroll", onScrollOrResize, { passive: true });
+    window.addEventListener("resize", onScrollOrResize);
+    return () => {
+      window.removeEventListener("scroll", onScrollOrResize);
+      window.removeEventListener("resize", onScrollOrResize);
+    };
+  }, [updateActiveFromScroll]);
 
   return (
     <>
       <Header
+        ref={headerRef}
         categories={categories}
         activeCategoryId={activeCategoryId}
         onTabClick={(id) => {

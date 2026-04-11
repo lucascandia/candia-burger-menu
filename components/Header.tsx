@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { forwardRef, useState } from "react";
 import Image from "next/image";
 import { CategoryTabs } from "./CategoryTabs";
 
@@ -15,11 +15,17 @@ interface HeaderProps {
   onTabClick?: (id: string) => void;
 }
 
-export function Header({ categories, activeCategoryId, onTabClick }: HeaderProps) {
+export const Header = forwardRef<HTMLElement, HeaderProps>(function Header(
+  { categories, activeCategoryId, onTabClick },
+  ref
+) {
   const [logoError, setLogoError] = useState(false);
 
   return (
-    <header className="sticky top-0 z-40 border-b border-zinc-800 bg-zinc-950/95 backdrop-blur supports-[backdrop-filter]:bg-zinc-950/80">
+    <header
+      ref={ref}
+      className="sticky top-0 z-40 border-b border-zinc-800 bg-zinc-950/95 backdrop-blur supports-[backdrop-filter]:bg-zinc-950/80"
+    >
       <div className="mx-auto max-w-lg px-4 py-3">
         <div className="mb-3 flex justify-center">
           {logoError ? (
@@ -49,4 +55,4 @@ export function Header({ categories, activeCategoryId, onTabClick }: HeaderProps
       </div>
     </header>
   );
-}
+});

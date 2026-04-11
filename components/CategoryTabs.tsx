@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect, useRef } from "react";
+
 interface Category {
   id: string;
   category: string;
@@ -12,6 +14,21 @@ interface CategoryTabsProps {
 }
 
 export function CategoryTabs({ categories, activeCategoryId, onTabClick }: CategoryTabsProps) {
+  const prevActiveRef = useRef<string | null>(activeCategoryId);
+
+  useEffect(() => {
+    if (activeCategoryId == null) {
+      prevActiveRef.current = null;
+      return;
+    }
+    if (prevActiveRef.current === activeCategoryId) return;
+    prevActiveRef.current = activeCategoryId;
+    document.getElementById(`category-tab-${activeCategoryId}`)?.scrollIntoView({
+      behavior: "smooth",
+      inline: "center",
+      block: "nearest",
+    });
+  }, [activeCategoryId]);
   const scrollToSection = (id: string) => {
     const el = document.getElementById(id);
     el?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -31,6 +48,7 @@ export function CategoryTabs({ categories, activeCategoryId, onTabClick }: Categ
         const isActive = id === activeCategoryId;
         return (
           <button
+            id={`category-tab-${id}`}
             key={id}
             type="button"
             onClick={() => handleClick(id)}
