@@ -22,7 +22,7 @@ export function CartFAB({ onOpenCheckout }: CartFABProps) {
     <button
       type="button"
       onClick={onOpenCheckout}
-      className="fixed bottom-6 left-1/2 z-50 flex min-h-[56px] -translate-x-1/2 items-center gap-3 rounded-full border-2 border-orange-500 bg-orange-600 px-6 py-3 text-white shadow-lg transition-colors hover:bg-orange-500 active:bg-orange-700"
+      className="fixed bottom-6 left-1/2 z-50 flex min-h-[52px] -translate-x-1/2 items-center gap-3 rounded-xl bg-orange-600 px-5 py-3 text-white shadow-lg shadow-orange-950/50 transition-colors hover:bg-orange-500 active:bg-orange-700"
       aria-label="Ver pedido"
     >
       <ShoppingCart className="h-6 w-6" aria-hidden />

@@ -9,14 +9,24 @@ Menú digital de **Candia Burger** con carrito y pedido por WhatsApp. Desarrolla
 ## Características
 
 - Tema oscuro con acentos naranja/rojo (marca "Fuego")
-- Logo y fotos de productos (hamburguesas, lomitos); emojis como fallback cuando no hay imagen
+- Menú con 9 categorías: Hamburguesas, Lomitos Árabes, Otras Opciones, Papas, Combo Kids, Pizzas, Salsas, Bebidas y Cervezas
+- Tarjetas con efecto hover (zoom de la foto, elevación y brillo naranja); emojis como fallback cuando no hay imagen
+- Pizzas: se piden enteras o **mitad y mitad** con otro sabor (se cobra el sabor más caro)
+- **Agregados** (carne, huevo, cheddar, katupiry, mozzarella, panceta; Gs. 4.000 c/u) en hamburguesas, lomitos, árabes y otras opciones
 - Navegación por categorías con scroll suave y tab activo resaltado
-- Carrito con Zustand (agrupación por producto y aclaraciones) y envío del pedido por WhatsApp
+- Carrito con Zustand (agrupación por producto, aclaraciones y agregados) y envío del pedido por WhatsApp
 - Checkout con tipo de pedido (Comer en Local / Para Retirar / Delivery) y mensaje WhatsApp formateado
-- Edición de cantidad y aclaraciones desde el resumen del pedido
-- Salsa de ajo con precio por cantidad (1: Gs. 2.000, 2: Gs. 3.000, 3: Gs. 5.000)
+- Edición de cantidad, agregados y aclaraciones desde el resumen del pedido
+- Salsas con precio por cantidad (1 pote: Gs. 2.000, 2: Gs. 3.000, 3: Gs. 5.000)
 - Descripciones expandibles en productos con texto largo
 - Footer con delivery y firma del desarrollador
+
+## Dónde editar el menú
+
+- Productos, precios y agregados: `data/menu.ts`
+- Reglas de precio (mitad y mitad, agregados, salsas): `lib/pricing.ts`
+- Fotos: `public/images/` (créditos de las fotos de terceros en `public/images/CREDITS.md`)
+- Menús impresos de referencia: `reference/`
 
 ## Stack
 
@@ -47,6 +57,7 @@ Abrir [http://localhost:3000](http://localhost:3000) (o el puerto que indique la
 | `npm run build` | Build de producción      |
 | `npm run start` | Servidor de producción   |
 | `npm run lint`  | Ejecutar ESLint          |
+| `node --test lib/*.test.ts` | Tests de precios y de integridad del menú |
 
 ## Despliegue en Vercel
 

@@ -190,6 +190,11 @@ export function CheckoutModal({ open, onClose, onEditItem }: CheckoutModalProps)
                           <span className="font-medium">{item.quantity}x</span>{" "}
                           {item.name}
                         </p>
+                        {item.extras && item.extras.length > 0 && (
+                          <p className="mt-0.5 text-sm text-orange-300/90">
+                            + {item.extras.map((e) => e.name).join(", ")}
+                          </p>
+                        )}
                         {item.observations?.trim() && (
                           <p className="mt-0.5 text-sm text-zinc-400 italic">
                             {item.observations.trim()}

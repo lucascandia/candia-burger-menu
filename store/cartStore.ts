@@ -1,7 +1,6 @@
 import { create } from "zustand";
-import type { MenuItem } from "@/lib/types";
-import type { CartItem } from "@/lib/types";
-import { getItemLineTotal } from "@/lib/utils";
+import type { CartItem, Extra, MenuItem } from "@/lib/types";
+import { extrasKey, getItemLineTotal } from "@/lib/pricing";
 
 export const MAX_QUANTITY_PER_ITEM = 10;
 
@@ -18,13 +17,19 @@ function newCartItemId(): string {
 
 interface CartState {
   items: CartItem[];
-  addItem: (item: MenuItem, quantity?: number, observations?: string) => void;
+  addItem: (
+    item: MenuItem,
+    quantity?: number,
+    observations?: string,
+    extras?: Extra[]
+  ) => void;
   removeItem: (cartItemId: string) => void;
   updateCartItem: (
     oldCartItemId: string,
     product: MenuItem,
     newQty: number,
-    newObservations: string
+    newObservations: string,
+    extras?: Extra[]
   ) => void;
   increment: (cartItemId: string) => void;
   decrement: (cartItemId: string) => void;
@@ -37,12 +42,20 @@ interface CartState {
 export const useCartStore = create<CartState>((set, get) => ({
   items: [],
 
-  addItem: (item: MenuItem, quantity = 1, observations?: string) =>
+  addItem: (
+    item: MenuItem,
+    quantity = 1,
+    observations?: string,
+    extras?: Extra[]
+  ) =>
     set((state) => {
       const obsNorm = normaliseObservations(observations);
+      const exKey = extrasKey(extras);
       const existing = state.items.find(
         (i) =>
-          i.id === item.id && normaliseObservations(i.observations) === obsNorm
+          i.id === item.id &&
+          normaliseObservations(i.observations) === obsNorm &&
+          extrasKey(i.extras) === exKey
       );
       if (existing) {
         const nextQty = Math.min(
@@ -69,6 +82,7 @@ export const useCartStore = create<CartState>((set, get) => ({
         image: item.image,
         quantity: qty,
         observations: (observations ?? "").trim() || undefined,
+        extras: extras && extras.length > 0 ? [...extras] : undefined,
       };
       return { items: [...state.items, newItem] };
     }),
@@ -82,17 +96,20 @@ export const useCartStore = create<CartState>((set, get) => ({
     oldCartItemId: string,
     product: MenuItem,
     newQty: number,
-    newObservations: string
+    newObservations: string,
+    extras?: Extra[]
   ) =>
     set((state) => {
       const withoutOld = state.items.filter(
         (i) => i.cartItemId !== oldCartItemId
       );
       const obsNorm = normaliseObservations(newObservations);
+      const exKey = extrasKey(extras);
       const existing = withoutOld.find(
         (i) =>
           i.id === product.id &&
-          normaliseObservations(i.observations) === obsNorm
+          normaliseObservations(i.observations) === obsNorm &&
+          extrasKey(i.extras) === exKey
       );
       if (existing) {
         const nextQty = Math.min(
@@ -121,6 +138,7 @@ export const useCartStore = create<CartState>((set, get) => ({
         quantity: qty,
         observations:
           (newObservations ?? "").trim() || undefined,
+        extras: extras && extras.length > 0 ? [...extras] : undefined,
       };
       return { items: [...withoutOld, newItem] };
     }),

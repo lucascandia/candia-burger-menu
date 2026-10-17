@@ -4,21 +4,8 @@ export function formatPrice(price: number): string {
   return `Gs. ${price.toLocaleString("es-PY").replace(/,/g, ".")}`;
 }
 
-export const SALSA_AJO_ITEM_ID = "s1";
-
-/** Precio por cantidad para Salsa de ajo: 1 → 2000, 2 → 3000, 3 → 5000; 4+ → 5000 + (qty-3)*2000 */
-export function getSalsaAjoLineTotal(quantity: number): number {
-  if (quantity <= 0) return 0;
-  if (quantity === 1) return 2000;
-  if (quantity === 2) return 3000;
-  if (quantity === 3) return 5000;
-  return 5000 + (quantity - 3) * 2000;
-}
-
-export function getItemLineTotal(item: CartItem): number {
-  if (item.id === SALSA_AJO_ITEM_ID) return getSalsaAjoLineTotal(item.quantity);
-  return item.price * item.quantity;
-}
+export { SALSA_AJO_ITEM_ID, getSalsaAjoLineTotal, getItemLineTotal } from "./pricing";
+import { getItemLineTotal } from "./pricing";
 
 export type OrderType = "local" | "retirar" | "delivery";
 
@@ -31,11 +18,13 @@ export interface CheckoutFormData {
 function formatOrderLines(items: CartItem[]): string[] {
   return items.flatMap((item) => {
     const line = `${item.quantity}x ${item.name} (${formatPrice(getItemLineTotal(item))})`;
-    const obs = (item.observations ?? "").trim();
-    if (obs) {
-      return [line, `  *Nota: ${obs}*`];
+    const out = [line];
+    if (item.extras && item.extras.length > 0) {
+      out.push(`  + Agregados: ${item.extras.map((e) => e.name).join(", ")}`);
     }
-    return [line];
+    const obs = (item.observations ?? "").trim();
+    if (obs) out.push(`  *Nota: ${obs}*`);
+    return out;
   });
 }
 

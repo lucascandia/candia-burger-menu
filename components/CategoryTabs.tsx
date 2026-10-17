@@ -41,7 +41,7 @@ export function CategoryTabs({ categories, activeCategoryId, onTabClick }: Categ
 
   return (
     <nav
-      className="flex gap-2 overflow-x-auto pb-2 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-zinc-700"
+      className="flex gap-1.5 overflow-x-auto pb-3 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-zinc-800"
       aria-label="Categorías del menú"
     >
       {categories.map(({ id, category }) => {
@@ -52,10 +52,10 @@ export function CategoryTabs({ categories, activeCategoryId, onTabClick }: Categ
             key={id}
             type="button"
             onClick={() => handleClick(id)}
-            className={`shrink-0 rounded-full px-4 py-2 text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 focus:ring-offset-zinc-950 ${
+            className={`shrink-0 rounded-md px-3 py-1.5 text-xs font-medium tracking-wide transition-colors focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-1 focus:ring-offset-zinc-950 ${
               isActive
-                ? "bg-gradient-to-r from-orange-600 to-red-600 text-white"
-                : "border border-orange-500/50 bg-zinc-900 text-white hover:border-orange-500 hover:bg-orange-500/10"
+                ? "bg-orange-600 border border-orange-600 text-white"
+                : "border border-zinc-700 bg-transparent text-zinc-400 hover:border-zinc-500 hover:text-zinc-200"
             }`}
           >
             {category}

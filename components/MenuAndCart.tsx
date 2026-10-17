@@ -7,13 +7,7 @@ import { ProductCard } from "./ProductCard";
 import { CartFAB } from "./CartFAB";
 import { CheckoutModal } from "./CheckoutModal";
 import { AddToCartModal } from "./AddToCartModal";
-import type { MenuItem, CartItem } from "@/lib/types";
-
-interface MenuCategory {
-  id: string;
-  category: string;
-  items: MenuItem[];
-}
+import type { MenuItem, MenuCategory, CartItem } from "@/lib/types";
 
 interface MenuAndCartProps {
   menuData: MenuCategory[];
@@ -29,8 +23,11 @@ function readingLineY(headerEl: HTMLElement | null): number {
   return 120;
 }
 
-function cartItemToMenuItem(item: CartItem): MenuItem {
+function cartItemToMenuItem(item: CartItem, menuData: MenuCategory[]): MenuItem {
+  const original = menuData.flatMap((c) => c.items).find((i) => i.id === item.id);
   return {
+    kind: original?.kind,
+    allowsExtras: original?.allowsExtras,
     id: item.id,
     name: item.name,
     description: item.description,
@@ -119,15 +116,19 @@ export function MenuAndCart({ menuData }: MenuAndCartProps) {
             id={section.id}
             className="scroll-mt-24 pb-8"
           >
-            <h2 className="mb-4 text-lg font-bold uppercase tracking-wide text-orange-500">
-              {section.category}
-            </h2>
-            <ul className="flex flex-col gap-3">
+            <div className="mb-3 flex items-center gap-3">
+              <h2 className="shrink-0 text-xs font-semibold uppercase tracking-widest text-orange-500">
+                {section.category}
+              </h2>
+              <div className="h-px flex-1 bg-zinc-800" />
+            </div>
+            <ul className="flex flex-col gap-2">
               {section.items.map((item) => (
                 <li key={item.id}>
                   <ProductCard
                     item={item}
                     categoryId={section.id}
+                    siblings={section.items}
                     onAddClick={(product) => {
                     setAddToCartProduct(product);
                     setAddToCartEditItem(null);
@@ -145,7 +146,7 @@ export function MenuAndCart({ menuData }: MenuAndCartProps) {
         open={checkoutOpen}
         onClose={() => setCheckoutOpen(false)}
         onEditItem={(item) => {
-          setAddToCartProduct(cartItemToMenuItem(item));
+          setAddToCartProduct(cartItemToMenuItem(item, menuData));
           setAddToCartEditItem(item);
         }}
       />
