@@ -1,0 +1,650 @@
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&family=Bebas+Neue&family=Space+Grotesk:wght@400;500;700&display=swap');
+
+  .design-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    margin-top: 24px;
+  }
+
+  .design-card {
+    border: 2px solid #2a2a2a;
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: border-color 0.2s, transform 0.15s;
+    background: #111;
+  }
+
+  .design-card:hover { border-color: #f97316; transform: translateY(-2px); }
+  .design-card.selected { border-color: #f97316; box-shadow: 0 0 0 1px #f97316; }
+
+  .design-card-label {
+    background: #1a1a1a;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid #2a2a2a;
+  }
+
+  .design-card-letter {
+    width: 28px; height: 28px;
+    background: #f97316;
+    color: #000;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 13px;
+    font-family: 'Space Grotesk', sans-serif;
+    flex-shrink: 0;
+  }
+
+  .design-card-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    color: #fff;
+  }
+
+  .design-card-desc {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    color: #888;
+    margin-top: 1px;
+  }
+
+  /* ===== MOCKUP A: Editorial Lines ===== */
+  .mockup-a {
+    background: #09090b;
+    font-family: 'Syne', sans-serif;
+    padding: 0;
+  }
+
+  .ma-header {
+    padding: 16px 16px 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid #1c1c1e;
+    padding-bottom: 12px;
+  }
+
+  .ma-logo {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #ea580c, #dc2626);
+    flex-shrink: 0;
+  }
+
+  .ma-brand {
+    font-size: 18px;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: 0.02em;
+    line-height: 1;
+  }
+
+  .ma-brand-sub {
+    font-size: 9px;
+    color: #f97316;
+    letter-spacing: 0.15em;
+    font-weight: 400;
+    text-transform: uppercase;
+    margin-top: 2px;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .ma-tabs {
+    display: flex;
+    gap: 0;
+    padding: 0 16px;
+    overflow: hidden;
+    border-bottom: 1px solid #1c1c1e;
+  }
+
+  .ma-tab {
+    padding: 10px 14px 8px;
+    font-size: 11px;
+    color: #666;
+    border-bottom: 2px solid transparent;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+    text-transform: uppercase;
+  }
+
+  .ma-tab.active {
+    color: #f97316;
+    border-bottom-color: #f97316;
+  }
+
+  .ma-section-label {
+    padding: 14px 16px 6px;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #f97316;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+  }
+
+  .ma-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 16px;
+    border-bottom: 1px solid #1c1c1e;
+  }
+
+  .ma-item-img {
+    width: 44px; height: 44px;
+    border-radius: 6px;
+    background: #1a1a1a;
+    flex-shrink: 0;
+    overflow: hidden;
+  }
+
+  .ma-item-img img { width: 100%; height: 100%; object-fit: cover; }
+
+  .ma-item-info { flex: 1; min-width: 0; }
+
+  .ma-item-name {
+    font-size: 12px;
+    font-weight: 600;
+    color: #fff;
+    font-family: 'DM Sans', sans-serif;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .ma-item-desc {
+    font-size: 10px;
+    color: #555;
+    font-family: 'DM Sans', sans-serif;
+    margin-top: 1px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .ma-item-price {
+    font-size: 13px;
+    font-weight: 700;
+    color: #f97316;
+    font-family: 'Syne', sans-serif;
+    white-space: nowrap;
+  }
+
+  .ma-add {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: transparent;
+    border: 1.5px solid #f97316;
+    color: #f97316;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  /* ===== MOCKUP B: Refined Cards ===== */
+  .mockup-b {
+    background: #09090b;
+    font-family: 'DM Sans', sans-serif;
+    padding: 0;
+  }
+
+  .mb-header {
+    padding: 16px;
+    text-align: center;
+    border-bottom: 1px solid #1c1c1e;
+  }
+
+  .mb-logo {
+    width: 48px; height: 48px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #ea580c, #dc2626);
+    margin: 0 auto 6px;
+  }
+
+  .mb-brand {
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.05em;
+    font-family: 'Bebas Neue', cursive;
+    font-size: 20px;
+    letter-spacing: 0.1em;
+  }
+
+  .mb-tabs {
+    display: flex;
+    gap: 6px;
+    padding: 10px 16px;
+    overflow: hidden;
+    background: #09090b;
+  }
+
+  .mb-tab {
+    padding: 5px 10px;
+    font-size: 10px;
+    color: #666;
+    border: 1px solid #2a2a2a;
+    border-radius: 4px;
+    font-weight: 500;
+    white-space: nowrap;
+    letter-spacing: 0.03em;
+  }
+
+  .mb-tab.active {
+    color: #fff;
+    background: #ea580c;
+    border-color: #ea580c;
+  }
+
+  .mb-section-label {
+    padding: 10px 16px 6px;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #f97316;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .mb-section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #1c1c1e;
+  }
+
+  .mb-list {
+    padding: 0 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .mb-card {
+    display: flex;
+    gap: 10px;
+    background: #111;
+    border: 1px solid #1c1c1e;
+    border-radius: 8px;
+    padding: 10px;
+    align-items: center;
+  }
+
+  .mb-card-img {
+    width: 48px; height: 48px;
+    border-radius: 6px;
+    background: #1a1a1a;
+    flex-shrink: 0;
+    overflow: hidden;
+  }
+
+  .mb-card-img img { width: 100%; height: 100%; object-fit: cover; }
+
+  .mb-card-info { flex: 1; min-width: 0; }
+
+  .mb-card-name {
+    font-size: 12px;
+    font-weight: 600;
+    color: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .mb-card-desc {
+    font-size: 10px;
+    color: #555;
+    margin-top: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .mb-card-footer {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 4px;
+  }
+
+  .mb-card-price {
+    font-size: 12px;
+    font-weight: 700;
+    color: #f97316;
+  }
+
+  .mb-add {
+    margin-left: auto;
+    padding: 3px 10px;
+    border-radius: 4px;
+    background: #ea580c;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+
+  /* ===== MOCKUP C: Bold & Graphic ===== */
+  .mockup-c {
+    background: #09090b;
+    font-family: 'Space Grotesk', sans-serif;
+    padding: 0;
+  }
+
+  .mc-header {
+    background: #0f0f0f;
+    padding: 14px 16px 0;
+    border-bottom: 1px solid #1c1c1e;
+  }
+
+  .mc-logo-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .mc-logo {
+    width: 32px; height: 32px;
+    border-radius: 6px;
+    background: #ea580c;
+    flex-shrink: 0;
+  }
+
+  .mc-brand {
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: -0.02em;
+  }
+
+  .mc-brand span { color: #f97316; }
+
+  .mc-tabs {
+    display: flex;
+    gap: 0;
+    overflow: hidden;
+  }
+
+  .mc-tab {
+    padding: 8px 12px 6px;
+    font-size: 11px;
+    color: #555;
+    font-weight: 500;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+  }
+
+  .mc-tab.active {
+    color: #fff;
+    border-bottom-color: #ea580c;
+  }
+
+  .mc-section {
+    padding: 12px 16px 6px;
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+  }
+
+  .mc-section-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: -0.01em;
+  }
+
+  .mc-section-count {
+    font-size: 10px;
+    color: #444;
+    font-weight: 400;
+  }
+
+  .mc-list {
+    padding: 0 16px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .mc-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid #161616;
+  }
+
+  .mc-item-circle {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: #1a1a1a;
+    flex-shrink: 0;
+    overflow: hidden;
+    border: 1.5px solid #222;
+  }
+
+  .mc-item-circle img { width: 100%; height: 100%; object-fit: cover; }
+
+  .mc-item-info { flex: 1; min-width: 0; }
+
+  .mc-item-name {
+    font-size: 12px;
+    font-weight: 600;
+    color: #e5e5e5;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    letter-spacing: -0.01em;
+  }
+
+  .mc-item-price {
+    font-size: 11px;
+    color: #f97316;
+    font-weight: 600;
+    margin-top: 2px;
+  }
+
+  .mc-add {
+    width: 28px; height: 28px;
+    border-radius: 6px;
+    background: rgba(234,88,12,0.15);
+    border: 1px solid rgba(234,88,12,0.3);
+    color: #f97316;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+</style>
+
+<h2>¿Qué dirección de rediseño preferís?</h2>
+<p class="subtitle">Las tres mantienen la paleta fuego (negro, naranja, rojo). Hacé click en la que más te guste.</p>
+
+<div class="design-cards">
+
+  <!-- OPCIÓN A -->
+  <div class="design-card" data-choice="a" onclick="toggleSelect(this)">
+    <div class="design-card-label">
+      <div class="design-card-letter">A</div>
+      <div>
+        <div class="design-card-name">Editorial Lines</div>
+        <div class="design-card-desc">Sin cajas, filas con divisores finos · Header horizontal compacto · Tabs con subrayado</div>
+      </div>
+    </div>
+    <div class="mockup-a">
+      <div class="ma-header">
+        <div class="ma-logo"></div>
+        <div>
+          <div class="ma-brand">Candia Burger</div>
+          <div class="ma-brand-sub">Menú Digital</div>
+        </div>
+      </div>
+      <div class="ma-tabs">
+        <div class="ma-tab active">Hamburguesas</div>
+        <div class="ma-tab">Lomitos</div>
+        <div class="ma-tab">Bebidas</div>
+      </div>
+      <div class="ma-section-label">Hamburguesas</div>
+      <div class="ma-item">
+        <div class="ma-item-img"><img src="/images/hamburguesa%20kids.jpeg" alt="" onerror="this.style.display='none'"></div>
+        <div class="ma-item-info">
+          <div class="ma-item-name">Hamburguesa Kids</div>
+          <div class="ma-item-desc">Pan, carne, lechuga, tomate, queso</div>
+        </div>
+        <div class="ma-item-price">$11.000</div>
+        <div class="ma-add">+</div>
+      </div>
+      <div class="ma-item">
+        <div class="ma-item-img"><img src="/images/hamburguesa%20completa.jpeg" alt="" onerror="this.style.display='none'"></div>
+        <div class="ma-item-info">
+          <div class="ma-item-name">Hamburguesa Completa</div>
+          <div class="ma-item-desc">Con huevo, doble queso mozzarella</div>
+        </div>
+        <div class="ma-item-price">$15.000</div>
+        <div class="ma-add">+</div>
+      </div>
+      <div class="ma-item">
+        <div class="ma-item-img"><img src="/images/hamburguesa%20completa.jpeg" alt="" onerror="this.style.display='none'"></div>
+        <div class="ma-item-info">
+          <div class="ma-item-name">Hamburguesa Doble</div>
+          <div class="ma-item-desc">Doble carne, doble queso mozzarella</div>
+        </div>
+        <div class="ma-item-price">$22.000</div>
+        <div class="ma-add">+</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OPCIÓN B -->
+  <div class="design-card" data-choice="b" onclick="toggleSelect(this)">
+    <div class="design-card-label">
+      <div class="design-card-letter">B</div>
+      <div>
+        <div class="design-card-name">Refined Cards</div>
+        <div class="design-card-desc">Cards más limpias y pequeñas · Logo centrado con tipografía Bold · Borde sutil en lugar de fondo</div>
+      </div>
+    </div>
+    <div class="mockup-b">
+      <div class="mb-header">
+        <div class="mb-logo"></div>
+        <div class="mb-brand">CANDIA BURGER</div>
+      </div>
+      <div class="mb-tabs">
+        <div class="mb-tab active">Hamburguesas</div>
+        <div class="mb-tab">Lomitos</div>
+        <div class="mb-tab">Bebidas</div>
+      </div>
+      <div class="mb-section-label">Hamburguesas</div>
+      <div class="mb-list">
+        <div class="mb-card">
+          <div class="mb-card-img"><img src="/images/hamburguesa%20kids.jpeg" alt="" onerror="this.style.display='none'"></div>
+          <div class="mb-card-info">
+            <div class="mb-card-name">Hamburguesa Kids</div>
+            <div class="mb-card-desc">Pan, carne, lechuga, tomate, queso</div>
+            <div class="mb-card-footer">
+              <span class="mb-card-price">Gs. 11.000</span>
+              <div class="mb-add">+ Agregar</div>
+            </div>
+          </div>
+        </div>
+        <div class="mb-card">
+          <div class="mb-card-img"><img src="/images/hamburguesa%20completa.jpeg" alt="" onerror="this.style.display='none'"></div>
+          <div class="mb-card-info">
+            <div class="mb-card-name">Hamburguesa Completa</div>
+            <div class="mb-card-desc">Con huevo, doble queso mozzarella</div>
+            <div class="mb-card-footer">
+              <span class="mb-card-price">Gs. 15.000</span>
+              <div class="mb-add">+ Agregar</div>
+            </div>
+          </div>
+        </div>
+        <div class="mb-card">
+          <div class="mb-card-img"><img src="/images/hamburguesa%20completa.jpeg" alt="" onerror="this.style.display='none'"></div>
+          <div class="mb-card-info">
+            <div class="mb-card-name">Hamburguesa Doble</div>
+            <div class="mb-card-desc">Doble carne, doble queso</div>
+            <div class="mb-card-footer">
+              <span class="mb-card-price">Gs. 22.000</span>
+              <div class="mb-add">+ Agregar</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OPCIÓN C -->
+  <div class="design-card" data-choice="c" onclick="toggleSelect(this)">
+    <div class="design-card-label">
+      <div class="design-card-letter">C</div>
+      <div>
+        <div class="design-card-name">Neo-Minimal</div>
+        <div class="design-card-desc">Imagen circular · Items muy compactos · Header oscuro con brand tipográfico · Sin ruido visual</div>
+      </div>
+    </div>
+    <div class="mockup-c">
+      <div class="mc-header">
+        <div class="mc-logo-row">
+          <div class="mc-logo"></div>
+          <div class="mc-brand">Candia <span>Burger</span></div>
+        </div>
+        <div class="mc-tabs">
+          <div class="mc-tab active">Hamburguesas</div>
+          <div class="mc-tab">Lomitos</div>
+          <div class="mc-tab">Porciones</div>
+          <div class="mc-tab">Bebidas</div>
+        </div>
+      </div>
+      <div class="mc-section">
+        <span class="mc-section-name">Hamburguesas</span>
+        <span class="mc-section-count">4 ítems</span>
+      </div>
+      <div class="mc-list">
+        <div class="mc-item">
+          <div class="mc-item-circle"><img src="/images/hamburguesa%20kids.jpeg" alt="" onerror="this.style.display='none'"></div>
+          <div class="mc-item-info">
+            <div class="mc-item-name">Hamburguesa Kids</div>
+            <div class="mc-item-price">Gs. 11.000</div>
+          </div>
+          <div class="mc-add">+</div>
+        </div>
+        <div class="mc-item">
+          <div class="mc-item-circle"><img src="/images/hamburguesa%20completa.jpeg" alt="" onerror="this.style.display='none'"></div>
+          <div class="mc-item-info">
+            <div class="mc-item-name">Hamburguesa Completa</div>
+            <div class="mc-item-price">Gs. 15.000</div>
+          </div>
+          <div class="mc-add">+</div>
+        </div>
+        <div class="mc-item">
+          <div class="mc-item-circle"><img src="/images/hamburguesa%20completa.jpeg" alt="" onerror="this.style.display='none'"></div>
+          <div class="mc-item-info">
+            <div class="mc-item-name">Hamburguesa Doble</div>
+            <div class="mc-item-price">Gs. 22.000</div>
+          </div>
+          <div class="mc-add">+</div>
+        </div>
+        <div class="mc-item">
+          <div class="mc-item-circle"><img src="/images/hamburguesa%20cacera.jpeg" alt="" onerror="this.style.display='none'"></div>
+          <div class="mc-item-info">
+            <div class="mc-item-name">Hamburguesa Gourmet</div>
+            <div class="mc-item-price">Gs. 20.000</div>
+          </div>
+          <div class="mc-add">+</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
