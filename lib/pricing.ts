@@ -32,6 +32,13 @@ export function getItemLineTotal(item: CartItem): number {
   return getUnitPrice(item) * item.quantity;
 }
 
+/** Fotos reales de combinaciones mitad y mitad, por id compuesto (ids ordenados). */
+const HALF_PIZZA_IMAGES: Record<string, string> = {
+  "z2+z5": "/images/pizza-mitad-pepperoni-pollo-katupiry.jpeg",
+  "z4+z5": "/images/pizza-mitad-choclo-pollo-katupiry.jpeg",
+  "z3+z5": "/images/pizza-mitad-napolitana-pollo-katupiry.jpeg",
+};
+
 function flavorOf(pizza: MenuItem): string {
   return pizza.name.replace(/^Pizza\s+/i, "");
 }
@@ -43,12 +50,13 @@ function flavorOf(pizza: MenuItem): string {
 export function buildHalfPizza(a: MenuItem, b: MenuItem): MenuItem {
   if (a.id === b.id) return a;
   const [first, second] = [a, b].sort((x, y) => x.id.localeCompare(y.id));
+  const id = `${first.id}+${second.id}`;
   return {
-    id: `${first.id}+${second.id}`,
+    id,
     name: `Pizza mitad ${flavorOf(first)} / mitad ${flavorOf(second)}`,
     description: `Mitad ${flavorOf(first)} y mitad ${flavorOf(second)} (8 porciones)`,
     price: Math.max(a.price, b.price),
-    image: first.image || second.image,
+    image: HALF_PIZZA_IMAGES[id] ?? (first.image || second.image),
     kind: "pizza",
   };
 }

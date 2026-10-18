@@ -58,13 +58,13 @@ export function ProductCard({ item, categoryId, siblings = [], onAddClick }: Pro
     <article className="group flex flex-col gap-3 rounded-lg border border-zinc-800/70 bg-zinc-950 p-3 transition-all duration-300 motion-reduce:transition-none motion-safe:hover:-translate-y-0.5 hover:border-orange-500/60 hover:shadow-[0_0_24px_-4px_rgba(249,115,22,0.35)]">
       <div className="flex gap-3">
       <div className="relative flex h-[88px] w-[88px] shrink-0 items-center justify-center overflow-hidden rounded-lg bg-zinc-900">
-        {!item.image || imgError ? (
+        {!effectiveItem.image || imgError ? (
           <span className="text-3xl" role="img" aria-hidden>
             {getEmojiForCategory(categoryId)}
           </span>
         ) : (
           <Image
-            src={item.image}
+            src={effectiveItem.image}
             alt={item.name}
             width={88}
             height={88}

@@ -42,7 +42,7 @@ export const menuData: MenuCategory[] = [
     category: "Pizzas",
     items: [
       { id: "z1", name: "Pizza Mozzarella", description: "Salsa, queso mozzarella, orégano, aceituna", price: 25000, image: "/images/pizza-mozzarella.jpg", kind: "pizza" },
-      { id: "z2", name: "Pizza Pepperoni", description: "Salsa, queso mozzarella, pepperoni, orégano, aceituna", price: 30000, image: "/images/pizza-pepperoni.jpg", kind: "pizza" },
+      { id: "z2", name: "Pizza Pepperoni", description: "Salsa, queso mozzarella, pepperoni, orégano, aceituna", price: 30000, image: "/images/pizza-pepperoni.jpeg", kind: "pizza" },
       { id: "z3", name: "Pizza Napolitana", description: "Salsa, jamón, queso mozzarella, tomate en rodajas, orégano, aceituna", price: 35000, image: "/images/pizza-napolitana.jpg", kind: "pizza" },
       { id: "z4", name: "Pizza Choclo y Katupiry", description: "Salsa, queso mozzarella, queso katupiry, choclo, orégano", price: 40000, image: "/images/pizza-choclo-katupiry.jpg", kind: "pizza" },
       { id: "z5", name: "Pizza Pollo y Katupiry", description: "Salsa, queso mozzarella, queso katupiry, pollo, orégano", price: 45000, image: "/images/pizza-pollo-katupiry.jpg", kind: "pizza" }
@@ -63,15 +63,15 @@ export const menuData: MenuCategory[] = [
     id: "otras-opciones",
     category: "Otras Opciones",
     items: [
-      { id: "o1", name: "Chivito Normal", description: "Doble carne de lomito, doble huevo, queso mozzarella, lechuga, tomate, repollo, salsa de la casa", price: 36000, image: "/images/chivito-normal.jpg", allowsExtras: true },
+      { id: "o1", name: "Chivito Normal", description: "Doble carne de lomito, doble huevo, queso mozzarella, lechuga, tomate, repollo, salsa de la casa", price: 36000, image: "/images/chivito-normal.jpeg", allowsExtras: true },
       { id: "o2", name: "Chivito Plus", description: "Triple carne de lomito, triple huevo, queso mozzarella, cebolla caramelizada, toque de cheddar, lechuga, tomate, repollo, salsa de la casa, agregado de papas", price: 70000, image: "/images/chivitoplus.jpeg", allowsExtras: true },
       { id: "o3", name: "Sandwich de Lomito", description: "Pan de lomito, lomito 90 gr, tomate, lechuga, huevo, queso mozzarella, salsa de choclo", price: 19000, image: "/images/sandwich%20de%20lomito.jpeg", allowsExtras: true },
-      { id: "o4", name: "Sandwich de Lomito Plus", description: "Pan pirata, carne de lomito, tomate, lechuga, repollo, doble huevo, queso mozzarella, cebolla caramelizada, salsa de choclo", price: 23000, image: "/images/sandwich%20de%20lomito.jpeg", allowsExtras: true },
-      { id: "o5", name: "Lomipizza", description: "Pan, tapa de pizza, carne de lomito, tomate, lechuga, repollo, 4 huevo, queso mozzarella, cebolla caramelizada, aceituna, panceta, salsa de choclo", price: 55000, image: "", allowsExtras: true },
-      { id: "o6", name: "Hamburpizza", description: "Pan, tapa de pizza, carne de hamburguesa, tomate, lechuga, repollo, 4 huevo, queso mozzarella, queso cheddar, cebolla caramelizada, aceituna, panceta, salsa de choclo", price: 55000, image: "/images/hamburpizza.jpg", allowsExtras: true },
+      { id: "o4", name: "Sandwich de Lomito Plus", description: "Pan pirata, carne de lomito, tomate, lechuga, repollo, doble huevo, queso mozzarella, cebolla caramelizada, salsa de choclo", price: 23000, image: "/images/sandwich-lomito-plus.jpeg", allowsExtras: true },
+      { id: "o5", name: "Lomipizza", description: "Pan, tapa de pizza, carne de lomito, tomate, lechuga, repollo, 4 huevo, queso mozzarella, cebolla caramelizada, aceituna, panceta, salsa de choclo", price: 55000, image: "/images/lomipizza.jpeg", allowsExtras: true },
+      { id: "o6", name: "Hamburpizza", description: "Pan, tapa de pizza, carne de hamburguesa, tomate, lechuga, repollo, 4 huevo, queso mozzarella, queso cheddar, cebolla caramelizada, aceituna, panceta, salsa de choclo", price: 55000, image: "/images/hamburpizza.jpeg", allowsExtras: true },
       { id: "o7", name: "Lomifit", description: "Pan árabe tostado, lomito, mozzarella, lechuga, tomate, sin salsa", price: 21000, image: "/images/lomifit.jpeg", allowsExtras: true },
       { id: "o8", name: "Churrasquito", description: "", price: 9000, image: "/images/churrasquito.jpeg", allowsExtras: true },
-      { id: "o9", name: "Super Pancho", description: "", price: 12000, image: "/images/super-pancho.jpg", allowsExtras: true }
+      { id: "o9", name: "Super Pancho", description: "", price: 12000, image: "/images/super-pancho.jpeg", allowsExtras: true }
     ]
   },
   {
